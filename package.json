@@ -1,0 +1,28 @@
+{
+  "name": "scrapperfundamentus",
+  "version": "0.0.1",
+  "description": "Scrapper developed to get informations about stock-market",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JuninhoFreitas/scrapperFundamentus.git"
+  },
+  "keywords": [
+    "scrapper",
+    "market"
+  ],
+  "author": "Junior Freitas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JuninhoFreitas/scrapperFundamentus/issues"
+  },
+  "homepage": "https://github.com/JuninhoFreitas/scrapperFundamentus#readme",
+  "dependencies": {
+    "cheerio": "1.0.0-rc.12",
+    "node-fetch": "2.6.7"
+  }
+}
