@@ -11,7 +11,6 @@ class HTMLProcessor {
     }
     async process() {
         const table = this.$('tbody')
-        const row = table.find('tr');
         let actualRow = table.find('tr');
         let total = []
         let template = {
