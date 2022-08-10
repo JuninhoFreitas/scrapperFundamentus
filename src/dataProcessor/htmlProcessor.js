@@ -9,39 +9,53 @@ class HTMLProcessor {
     _textToHtml(text) {
         return cheerio.load(text);
     }
+    _cleanText(text) {
+        return text.filter((a) => a !== '')
+    }
+    _serializeText(text) {
+        let template = {
+            'papel': '',
+            'segmento': '',
+            'cotacao': '',
+            'ffo_yield': '',
+            'dividend_yield': '',
+            'pvp': '',
+            'valor_de_mercado': '',
+            'liquidez': '',
+            'qtd_de_imoveis': '',
+            'preco_do_m2': '',
+            'aluguel_por_m2': '',
+            'cap_rate': '',
+            'vacancia_media': '',
+            'endereco': '',
+        }
+
+        const tempObject = {
+            ...template
+        };
+        
+        for (const pos in text) {
+            tempObject[Object.keys(tempObject)[pos]] = Object.values(text)[pos];
+        }
+
+        return tempObject;
+    }
     async process() {
         const table = this.$('tbody')
         let actualRow = table.find('tr');
-        let total = []
-        let template = {
-            'Papel': '',
-            'Segmento': '',
-            'Cotacao': '',
-            'FFO_Yield': '',
-            'Dividend_Yield': '',
-            'PVP': '',
-            'Valor_de_Mercado': '',
-            'Liquidez': '',
-            'Qtd_de_imoveis': '',
-            'Preco_do_m2': '',
-            'Aluguel_por_m2': '',
-            'Cap_Rate': '',
-            'Vacancia_Media': '',
-            'Endereco': '',
-        }
+        const listOfStocks = []
+        
 
         for (let i = 0; i < table.children().length; i++) {
             actualRow = actualRow.next();
-            let splited = actualRow.first().text().split('\n').filter((a) => a !== '')
-            const tempObject = {
-                ...template
-            };
-            for (const pos in splited) {
-                tempObject[Object.keys(tempObject)[pos]] = Object.values(splited)[pos];
-            }
-            total.push(tempObject);
-            return total;
+            const rawText = actualRow.first().text()
+            const splitedText = rawText.split('\n')
+            const filteredText = this._cleanText(splitedText)
+            const result = this._serializeText(filteredText);
+            listOfStocks.push(result);
         }
+
+        return listOfStocks;
 
     }
 
