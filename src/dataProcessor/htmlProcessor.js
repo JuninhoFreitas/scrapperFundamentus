@@ -1,29 +1,48 @@
 const cheerio = require('cheerio')
 const fs = require('fs')
-class HTMLProcessor{
-    constructor(text){
+class HTMLProcessor {
+    constructor(text) {
         this.text = text;
         this.$ = this._textToHtml(this.text);
         fs.writeFileSync('./test.txt', text);
     };
-    _textToHtml(text){
+    _textToHtml(text) {
         return cheerio.load(text);
     }
-    async process(){
+    async process() {
         const table = this.$('tbody')
-        const row = table.find('tr a');
-        const nextRow = table.find('tr').next().find('a');
-        // parent,prev,next,startIndex,endIndex,children,name,attribs,type,namespace,x-attribsNamespace,x-attribsPrefix
-        const childs = [...table.find("tr a").toString().matchAll(/\>\w+\</g)].map(data=>data[0].match(/\w+/));
+        const row = table.find('tr');
+        let actualRow = table.find('tr');
+        let total = []
+        let template = {
+            'Papel': '',
+            'Segmento': '',
+            'Cotacao': '',
+            'FFO_Yield': '',
+            'Dividend_Yield': '',
+            'PVP': '',
+            'Valor_de_Mercado': '',
+            'Liquidez': '',
+            'Qtd_de_imoveis': '',
+            'Preco_do_m2': '',
+            'Aluguel_por_m2': '',
+            'Cap_Rate': '',
+            'Vacancia_Media': '',
+            'Endereco': '',
+        }
 
-        
-        const result = `
-        ${row.html()}
-        ${nextRow.html()}
-        children
-        ${childs[0]}
-        `
-        return result
+        for (let i = 0; i < table.children().length; i++) {
+            actualRow = actualRow.next();
+            let splited = actualRow.first().text().split('\n').filter((a) => a !== '')
+            const tempObject = {
+                ...template
+            };
+            for (const pos in splited) {
+                tempObject[Object.keys(tempObject)[pos]] = Object.values(splited)[pos];
+            }
+            total.push(tempObject);
+            return total;
+        }
 
     }
 

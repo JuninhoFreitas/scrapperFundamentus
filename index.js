@@ -6,6 +6,6 @@ const HtmlProcessor = require('./src/dataProcessor/htmlProcessor');
 ;(async()=>{
   const htmlText = await webScrapper.fetchToText();
   const htmlProcessor = new HtmlProcessor(htmlText);
-  const result = await htmlProcessor.process();
-  console.log(result)
+  const listOfStocks = await htmlProcessor.process();
+  console.log(listOfStocks)
 })()
