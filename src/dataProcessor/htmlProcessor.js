@@ -44,7 +44,6 @@ class HTMLProcessor {
         const table = this.$('tbody')
         let actualRow = table.find('tr');
         const listOfStocks = []
-        
 
         for (let i = 0; i < table.children().length; i++) {
             actualRow = actualRow.next();
